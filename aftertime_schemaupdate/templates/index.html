@@ -1,0 +1,443 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Chatbot</title>-->
+<!--    <style>-->
+<!--        /* Reset CSS */-->
+<!--        * {-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            box-sizing: border-box;-->
+<!--        }-->
+
+<!--        /* Modern Chatbot UI Styles */-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            background-color: #f4f4f4;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            align-items: center;-->
+<!--            height: 100vh;-->
+<!--        }-->
+
+<!--        .chat-container {-->
+<!--            width: 80%;-->
+<!--            max-width: 500px;-->
+<!--            background-color: #fff;-->
+<!--            border-radius: 15px;-->
+<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->
+<!--            overflow: hidden;-->
+<!--        }-->
+
+<!--        .response-container {-->
+<!--            padding: 20px;-->
+<!--            overflow-y: auto;-->
+<!--            max-height: 300px;-->
+<!--            animation: fadeInDown 0.5s ease;-->
+<!--        }-->
+
+<!--        .input-container {-->
+<!--            padding: 20px;-->
+<!--            border-top: 1px solid #ccc;-->
+<!--            position: relative;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            align-items: center;-->
+<!--            animation: fadeInUp 0.5s ease;-->
+<!--        }-->
+
+<!--        .input-container label {-->
+<!--            font-weight: bold;-->
+<!--            display: block;-->
+<!--            margin-bottom: 10px;-->
+<!--            color: #333;-->
+<!--        }-->
+
+<!--        .input-container input[type="text"] {-->
+
+<!--            width: calc(100% - 40px);-->
+<!--            padding: 10px;-->
+<!--            border: 1px solid #ccc;-->
+<!--            border-radius: 5px;-->
+<!--            box-sizing: border-box;-->
+<!--            margin-bottom: 10px;-->
+<!--            font-size: 16px;-->
+<!--            transition: border-color 0.3s ease;-->
+<!--        }-->
+
+<!--        .input-container input[type="text"]:focus {-->
+<!--            border-color: #007bff;-->
+<!--            outline: none;-->
+<!--        }-->
+
+<!--        .loading-icon {-->
+<!--            font-size: 20px;-->
+<!--            display: none;-->
+<!--            animation: rotate 1s infinite linear;-->
+<!--        }-->
+
+<!--        .input-container button {-->
+<!--            padding: 10px 20px;-->
+<!--            background-color: #007bff;-->
+<!--            color: #fff;-->
+<!--            border: none;-->
+<!--            border-radius: 5px;-->
+<!--            cursor: pointer;-->
+<!--            transition: background-color 0.3s ease;-->
+<!--            font-size: 16px;-->
+<!--            margin-top: 5px;-->
+<!--        }-->
+
+<!--        .input-container button:hover {-->
+<!--            background-color: #0056b3;-->
+<!--        }-->
+
+<!--        .message-container {-->
+<!--            padding: 20px;-->
+<!--            border-top: 1px solid #ccc;-->
+<!--        }-->
+
+<!--        .message {-->
+<!--            margin-bottom: 15px;-->
+<!--            padding: 15px;-->
+<!--            border-radius: 10px;-->
+<!--            font-size: 16px;-->
+<!--            animation: fadeIn 0.5s ease;-->
+<!--        }-->
+
+<!--        .user-message {-->
+<!--            background-color: #007bff;-->
+<!--            color: #fff;-->
+<!--            align-self: flex-end;-->
+<!--        }-->
+
+<!--        .bot-message {-->
+<!--            background-color: #4caf50;-->
+<!--            color: #fff;-->
+<!--            align-self: flex-start;-->
+<!--        }-->
+
+<!--        /* Animations */-->
+<!--        @keyframes fadeIn {-->
+<!--            from {-->
+<!--                opacity: 0;-->
+<!--                transform: translateY(-20px);-->
+<!--            }-->
+<!--            to {-->
+<!--                opacity: 1;-->
+<!--                transform: translateY(0);-->
+<!--            }-->
+<!--        }-->
+
+<!--        @keyframes fadeInUp {-->
+<!--            from {-->
+<!--                opacity: 0;-->
+<!--                transform: translateY(20px);-->
+<!--            }-->
+<!--            to {-->
+<!--                opacity: 1;-->
+<!--                transform: translateY(0);-->
+<!--            }-->
+<!--        }-->
+
+<!--        @keyframes fadeInDown {-->
+<!--            from {-->
+<!--                opacity: 0;-->
+<!--                transform: translateY(-20px);-->
+<!--            }-->
+<!--            to {-->
+<!--                opacity: 1;-->
+<!--                transform: translateY(0);-->
+<!--            }-->
+<!--        }-->
+
+<!--        @keyframes rotate {-->
+<!--            to {-->
+<!--                transform: rotate(360deg);-->
+<!--            }-->
+<!--        }-->
+
+<!--        /* Responsive */-->
+<!--        @media screen and (max-width: 600px) {-->
+<!--            .chat-container {-->
+<!--                width: 90%;-->
+<!--            }-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <div class="chat-container">-->
+<!--        <div class="response-container" id="response"></div>-->
+<!--        <div class="input-container">-->
+<!--            <label for="text">Enter your question:</label>-->
+<!--            <input type="text" id="text" name="text" placeholder="Type your message here...">-->
+<!--            <div class="loading-icon">⏳</div>-->
+<!--            <button onclick="submitQuestion()">Send</button>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <script>-->
+<!--        function submitQuestion() {-->
+<!--            var question = document.getElementById("text").value;-->
+<!--            var loadingIcon = document.querySelector('.loading-icon');-->
+<!--            loadingIcon.style.display = 'inline-block';-->
+<!--            var xhttp = new XMLHttpRequest();-->
+<!--            xhttp.onreadystatechange = function() {-->
+<!--                if (this.readyState == 4 && this.status == 200) {-->
+<!--                    var response = JSON.parse(this.responseText);-->
+<!--                    document.getElementById("response").innerHTML += `<div class="message bot-message"><strong>You:</strong> ${question}<br><strong>Bot:</strong> ${response.response}</div>`;-->
+<!--                    document.getElementById("text").value = "";-->
+<!--                    loadingIcon.style.display = 'none';-->
+<!--                }-->
+<!--            };-->
+<!--            xhttp.open("POST", "/query", true);-->
+<!--            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");-->
+<!--            xhttp.send("text=" + question);-->
+<!--        }-->
+<!--    </script>-->
+<!--</body>-->
+<!--</html>-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Modern Chatbot UI Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .chat-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chat-box {
+            width: 90%;
+            max-width: 600px;
+            height: 80vh;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .response-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .input-container {
+            padding: 20px;
+            border-top: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-container label {
+            font-weight: bold;
+            margin-right: 10px;
+            color: #333;
+        }
+
+        .input-container input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-container input[type="text"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .loading-icon {
+            font-size: 20px;
+            display: none;
+            animation: rotate 1s infinite linear;
+        }
+
+        .input-container button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
+        .input-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .message-container {
+            padding: 20px;
+            border-top: 1px solid #ccc;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            animation: fadeIn 0.5s ease;
+            overflow-wrap: break-word;
+        }
+
+        .user-message {
+            background-color: #007bff;
+            color: #fff;
+            align-self: flex-end;
+        }
+
+        .bot-message {
+            background-color: #4caf50;
+            color: #fff;
+            align-self: flex-start;
+        }
+
+        .timestamp {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes rotate {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Additional Styles for Aesthetic Enhancement */
+        .input-container input[type="text"] {
+            background-color: #f9f9f9;
+            color: #333;
+            border: 1px solid #ccc;
+        }
+
+        .input-container button {
+            background-color: #4caf50;
+        }
+
+        .input-container button:hover {
+            background-color: #388e3c;
+        }
+
+        .message-container {
+            background-color: #f9f9f9;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive */
+        @media screen and (max-width: 600px) {
+            .chat-box {
+                height: 70vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-box">
+            <div class="response-container" id="response"></div>
+            <div class="input-container">
+                <label for="text">Enter your question:</label>
+                <input type="text" id="text" name="text" placeholder="Type your message here...">
+                <div class="loading-icon">⏳</div>
+                <button onclick="submitQuestion()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function submitQuestion() {
+            var question = document.getElementById("text").value;
+            var loadingIcon = document.querySelector('.loading-icon');
+            loadingIcon.style.display = 'inline-block';
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var response = JSON.parse(this.responseText);
+                    document.getElementById("response").innerHTML += `<div class="message user-message">You: <div>${question}</div></div>` +
+                        `<div class="message bot-message">Bot: <div>${response.response}</div><div class="timestamp">${getCurrentTime()}</div></div>`;
+                    document.getElementById("text").value = "";
+                    loadingIcon.style.display = 'none';
+                }
+            };
+            xhttp.open("POST", "/query", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("text=" + question);
+        }
+
+        function getCurrentTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            return `${hours}:${minutes}`;
+        }
+
+        function scrollToBottom() {
+            var responseContainer = document.querySelector('.response-container');
+            // Check if the scrollbar is already at the bottom
+            var isScrolledToBottom = responseContainer.scrollHeight - responseContainer.clientHeight <= responseContainer.scrollTop + 1;
+            if (isScrolledToBottom) {
+                // If it's already at the bottom, scroll down
+                responseContainer.scrollTop = responseContainer.scrollHeight - responseContainer.clientHeight;
+            }
+        }
+
+        // Simulate real-time updates (polling)
+        setInterval(function() {
+            scrollToBottom();
+        }, 2000); // Adjust the interval as needed
+    </script>
+</body>
+</html>
