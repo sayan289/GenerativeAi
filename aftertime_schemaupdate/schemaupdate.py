@@ -149,7 +149,7 @@ def index():
     global cached_embeddings
     if cached_embeddings is None:
         # Embed the PDF only if the embeddings are not cached
-        os.environ["OPENAI_API_KEY"] = "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"
+        os.environ["OPENAI_API_KEY"] = ""
         reader = PdfReader('/home/cbnits-51/Desktop/sayan/sample_project/data/Apache Spark.pdf')
         raw_text = ''
         for i, page in enumerate(reader.pages):
